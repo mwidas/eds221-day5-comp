@@ -21,7 +21,7 @@ Recall the Leslie matrix from EDS 212. Matrix multiplication (using the dot prod
 ### Create the Leslie matrix:
 
 ```{r}
-# Make the Leslie Matrix:
+# Make the Leslie Matrix that is in a 4x4 set-up by row so first 4 values are first row:
 fish_leslie <- matrix(c(0, 0, 0, 600, 0.05, 0, 0, 0, 0, 0.20, 0, 0, 0, 0, 0.16, 0.9), nrow = 4, ncol = 4, byrow = TRUE)
 
 # Check it out: 
@@ -43,27 +43,30 @@ Add line-by-line comments wheres prompted in the code below, explaining what eac
 # ------ WHAT HAPPENS HERE? ------ #
 # ------ comment line-by-line ---- #
 
-# The line below...
+# making a vector from 0 to 8 incrementing by 1
 time_yr <- seq(from = 0, to = 8, by = 1)
 
-# The line below...
+# making an empty matrix that will have columns of how many values are in fish year 0 (4) and rows of time in years (9)
 proj_year <- matrix(ncol = length(fish_year0), nrow = length(time_yr))
 
-# The line below...
+#  the first row in the matrix should be populated by fish_year0
 proj_year[1, ] <- fish_year0
 
-# The for loop below...
+# starting at row 2 and iterate over the length of time for the rest of the rows with the equation using the dot product of the fish_leslie matrix with the previous rows values of the matrix
 for (i in 2:length(time_yr)) {
   proj_year[i,] <- fish_leslie %*% proj_year[i-1,]
 }
 
 
 # The rest is wrangling & visualization (run to check it out):
+# this added column names
 colnames(proj_year) <- c("eggs", "fry", "juvenile", "adult")
 
+# this creates a data frame, and move columns into long format where a column indicates the life stage and the second column will be the resulting value
 proj_df <- data.frame(time_yr, proj_year) %>% 
   pivot_longer(cols = -time_yr, names_to = "lifestage", values_to = "stage_population")
 
+#making a graph
 ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
   geom_line(aes(color = lifestage)) +
   scale_y_log10()
@@ -71,3 +74,8 @@ ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
 ```
 
 Test different combinations of survival / reproduction and starting population structures to see what happens! 
+
+```{r}
+
+```
+

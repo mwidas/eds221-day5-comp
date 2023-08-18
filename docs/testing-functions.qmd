@@ -1,0 +1,60 @@
+---
+title: "testing-functions"
+format: html
+editor: visual
+execute: 
+  warning: false
+---
+
+```{r}
+library(testthat)
+```
+
+## Function Testing
+
+install.packages(c("testthat", "devtools", "remotes"))
+
+```{r}
+#making a function when you plug in a dataframe 
+mean_range <- function(df) {
+  
+  # calculating the mean of each column in our data frame, then find min and max of that
+  col_means <- apply(X = df, MARGIN = 2, FUN = mean, na.rm = TRUE)
+  col_mean_max <- max(col_means)
+  col_mean_min <- min(col_means)
+  # I want a vector returned 
+  return(c(col_mean_min, col_mean_max))
+}
+```
+
+```{r}
+#let's try this out
+mean_range(mtcars)
+
+mean_range(faithful)
+```
+
+-   errors we could look for
+
+    -   should always be numeric
+
+    -   should always be a vector
+
+## Write some unit tests for previous example
+
+```{r}
+# if i apply function mean_range on mtcars the vector length should always be 2, will return nothing if correct, if you test with 3 you get error
+expect_length(mean_range(mtcars), 2)
+
+expect_length(mean_range(mtcars), 3)
+```
+
+```{r}
+# if i apply function mean_range on mtcars the vector length should always be double (since it is numerics in vector), will return nothing if correct, if you test with "character" you get error
+expect_type(mean_range(mtcars), "double")
+```
+
+```{r}
+# the first number in vector should always be less than the second number in the vector, is this true for the data frame
+expect_true(mean_range(mtcars)[1] < mean_range(mtcars)[2] )
+```
