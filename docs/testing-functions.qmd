@@ -8,6 +8,7 @@ execute:
 
 ```{r}
 library(testthat)
+library(tidyverse)
 ```
 
 ## Function Testing
@@ -46,7 +47,7 @@ mean_range(faithful)
 # if i apply function mean_range on mtcars the vector length should always be 2, will return nothing if correct, if you test with 3 you get error
 expect_length(mean_range(mtcars), 2)
 
-expect_length(mean_range(mtcars), 3)
+# expect_length(mean_range(mtcars), 3), will not render if there is a break
 ```
 
 ```{r}
@@ -58,3 +59,23 @@ expect_type(mean_range(mtcars), "double")
 # the first number in vector should always be less than the second number in the vector, is this true for the data frame
 expect_true(mean_range(mtcars)[1] < mean_range(mtcars)[2] )
 ```
+
+## Afternoon Interactive
+
+```{r}
+# want to use function made in other folder so need to indicate where to look being from the beginning of the working directory
+
+source(here::here("src", "name_cart.R"))
+
+name_cart("enchilada", "hawk")
+```
+
+```{r}
+source(here::here("src", "cork_oak_growth.R"))
+
+height_t2(height_t1 = 20, t1 = 4, t2 = 19)
+```
+
+## Making packages
+
+when making packings click in middle of function in document and go to code and choose insert roxygenskeleton to make formatting for documentation for functions in packages
